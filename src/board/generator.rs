@@ -6,8 +6,8 @@ use crate::{Board, Color};
 pub struct Move {
     pub from: usize,
     pub to: usize,
-    pub promote_to: &'static Piece,
-    pub capture: &'static Piece,
+    pub promote_to: Piece,
+    pub capture: Piece,
 }
 
 impl Default for Move {
@@ -15,8 +15,8 @@ impl Default for Move {
         Move {
             from: 0,
             to: 0,
-            promote_to: &Piece::EMPTY,
-            capture: &Piece::EMPTY
+            promote_to: Piece::EMPTY,
+            capture: Piece::EMPTY
         }
     }
 }
@@ -40,22 +40,22 @@ pub trait MoveGenerator {
     fn in_bounds(&self, index: isize) -> bool;
     fn is_empty_field(&self, index: isize) -> bool;
     fn is_valid_field(&self, rank: isize, file: isize) -> bool;
-    fn can_take(&self, index: isize, current_color: &Color) -> bool;
+    fn can_take(&self, index: isize, current_color: Color) -> bool;
 
     fn calc_index(&self, rank: usize, file: usize) -> usize;
     fn calc_relative_index(&self, index: usize, plus_ranks: isize, plus_files: isize) -> isize;
     fn calc_rank_and_file(&self, index: usize) -> (usize, usize);
 
-    fn current_direction(&self, color: &Color) -> isize;
+    fn current_direction(&self, color: Color) -> isize;
 
-    fn generate_pawn_moves(&self, position: usize, color: &Color) -> Vec<Move>;
-    fn generate_rook_moves(&self, position: usize, color: &Color) -> Vec<Move>;
-    fn generate_bishop_moves(&self, position: usize, color: &Color) -> Vec<Move>;
-    fn generate_knight_moves(&self, position: usize, color: &Color) -> Vec<Move>;
-    fn generate_queen_moves(&self, position: usize, color: &Color) -> Vec<Move>;
-    fn generate_king_moves(&self, position: usize, color: &Color) -> Vec<Move>;
+    fn generate_pawn_moves(&self, position: usize, color: Color) -> Vec<Move>;
+    fn generate_rook_moves(&self, position: usize, color: Color) -> Vec<Move>;
+    fn generate_bishop_moves(&self, position: usize, color: Color) -> Vec<Move>;
+    fn generate_knight_moves(&self, position: usize, color: Color) -> Vec<Move>;
+    fn generate_queen_moves(&self, position: usize, color: Color) -> Vec<Move>;
+    fn generate_king_moves(&self, position: usize, color: Color) -> Vec<Move>;
 
-    fn generate(&self, next: &Color) -> Vec<Move>;
+    fn generate(&self, next: Color) -> Vec<Move>;
 
     fn apply(&self, m: Move) -> Board;
     fn undo(&self, m: Move) -> Board;
